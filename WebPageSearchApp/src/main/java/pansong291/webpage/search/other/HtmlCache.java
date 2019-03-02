@@ -58,7 +58,8 @@ public class HtmlCache
  public String set(int i, String s)
  {
   if(pages.containsKey(i)) pages.remove(i);
-  return pages.put(i, s);
+  pages.put(i, s);
+  return s;
  }
  
  public String get(int i)
