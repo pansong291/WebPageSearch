@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">WebPageSearch</string>
-    <string name="hello_user">Hello User!</string>
+    <string name="cache_help">HTML示例代码：\n&lt;a href=\"abc\" class=\"def\" &gt;链接1&lt;/a&gt;\n&lt;a href=\"ghi\" class=\"def\" &gt;链接2&lt;/a&gt;\n\n示例1：两个链接都获取。\n标签名：a\n属性：class=\"def\"\n\n示例2：只获取链接1。\n标签名：a\n属性：\nclass=\"def\"\nhref=\"abc\"\n\n示例3：获取除了链接1的其它链接。\n标签名：a\n属性：\nclass=\"def\"\n-href=\"abc\"\n在属性前加上一个减号以表示排除具有该属性的标签。</string>
     
     <color name="color_alpha">#00000000</color>
     <color name="color_btn_down">#F0F0F0</color>

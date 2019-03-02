@@ -11,6 +11,7 @@ import org.apache.http.util.EntityUtils;
 import pansong291.webpage.search.MyApplication;
 import pansong291.webpage.search.activity.MainActivity;
 import pansong291.webpage.search.view.LineEditText;
+import pansong291.webpage.search.other.HtmlUtils;
 
 
 public class WebSearchTask extends AsyncTask
@@ -34,15 +35,18 @@ public class WebSearchTask extends AsyncTask
  protected String doInBackground(Object[] p1)
  {
   int i1 = p1[2], i2 = p1[3];
-  int count[] = new int[2];
+  int count[] = new int[3];
   if(i1 < i2) for(int i = i1; i <= i2; i++)
   {
-   searchWebSourceCode((String)p1[0], i, (String)p1[1], count);
+   if(isCancelled())break;
+   searchWebSourceCode((String)p1[0], i, (String)p1[1], count, (String)p1[4], (String[])p1[5]);
   }else for(int i = i1; i >= i2; i--)
   {
-   searchWebSourceCode((String)p1[0], i, (String)p1[1], count);
+   if(isCancelled())break;
+   searchWebSourceCode((String)p1[0], i, (String)p1[1], count, (String)p1[4], (String[])p1[5]);
   }
-  return "共搜到" + count[0] + "个结果，" + count[1] + "个页面超时";
+  ma.saveHtmlCache();
+  return "共搜到" + count[0] + "个结果，" + count[1] + "个页面超时，新增" + count[2] + "个缓存页面，共有" + ma.htmlCache.size() + "个缓存页面";
  }
 
  @Override
@@ -58,20 +62,31 @@ public class WebSearchTask extends AsyncTask
   ma.setStartButtonEnable(true);
  }
  
- private void searchWebSourceCode(String url, int page, String key, int[] count)
+ private void searchWebSourceCode(String url, int page, String key, int[] count, String name, String[] params)
  {
   String res = null;
   int rCount = 0, index = -1;
-  if(!isCancelled()) try
+  try
   {
    publishProgress(LineEditText.TEXT_APPEND_NEW_LINE, "正在获取第" + page + "页");
    
-   HttpGet hg = new HttpGet(getURL(url, page));
-   HttpConnectionParams.setConnectionTimeout(hg.getParams(), 3000);
-   HttpConnectionParams.setSoTimeout(hg.getParams(), 3000);
-   HttpClient client = new DefaultHttpClient();
-   HttpResponse response = client.execute(hg);
-   res = EntityUtils.toString(response.getEntity(), "utf-8");
+   if(ma.htmlCache.has(page))
+   {
+    res = ma.htmlCache.get(page);
+   }else
+   {   
+    HttpGet hg = new HttpGet(getURL(url, page));
+    HttpConnectionParams.setConnectionTimeout(hg.getParams(), 3000);
+    HttpConnectionParams.setSoTimeout(hg.getParams(), 3000);
+    HttpClient client = new DefaultHttpClient();
+    HttpResponse response = client.execute(hg);
+    res = EntityUtils.toString(response.getEntity(), "utf-8");
+    if(name != null && !name.isEmpty())
+    {
+     res = ma.htmlCache.set(page, HtmlUtils.getHtmlItems(res, name, params));
+     count[2]++;
+    }
+   }
    
    for(;;)
    {

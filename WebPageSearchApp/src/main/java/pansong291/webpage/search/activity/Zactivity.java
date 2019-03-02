@@ -10,7 +10,8 @@ public class Zactivity extends Activity
 {
  public static final String Z_WEB_URL = "web_url",
   Z_SEARCH_KEY = "search_key", Z_RANGE1 = "range1",
-  Z_RANGE2 = "range2", Z_PROGRESS = "progress";
+  Z_RANGE2 = "range2", Z_PROGRESS = "progress",
+  Z_CACHE_NAME = "cahce_name", Z_CACHE_PARAMS = "cache_params";
  SharedPreferences sp;
 
  @Override
