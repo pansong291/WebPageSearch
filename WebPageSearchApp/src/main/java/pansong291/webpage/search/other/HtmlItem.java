@@ -195,12 +195,10 @@ public class HtmlItem
    for(int i = 0; i < item.length(); i++)
    {
     ch = item.charAt(i);
-    if(ch == '<' || Character.isWhitespace(ch))
-    {
-     if(sb.length() == 0) continue;
-     else break;
-    }
-    sb.append(ch);
+    if(Character.isLetterOrDigit(ch))
+     sb.append(ch);
+    else if(sb.length() == 0) continue;
+    else break;
    }
    itemName = sb.toString();
   }
