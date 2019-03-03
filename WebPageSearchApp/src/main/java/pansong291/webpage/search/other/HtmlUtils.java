@@ -46,7 +46,8 @@ public class HtmlUtils
      {
       isLastDivision = true;
       continue;
-     }
+     }else if (currentMode == MODE.MATCH_NAME)
+      currentMode = MODE.NONE;
      break;
 
     case '>':
@@ -86,6 +87,7 @@ public class HtmlUtils
        break;
      }
      break;
+     
     default:
      switch (currentMode)
      {
