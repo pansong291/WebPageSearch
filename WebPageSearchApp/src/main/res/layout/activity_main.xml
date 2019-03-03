@@ -45,6 +45,7 @@
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent"
 			android:id="@+id/edt_searchkey"
+            android:maxLines="3"
 			android:textColor="#FF000000"/>
 
 	</LinearLayout>
